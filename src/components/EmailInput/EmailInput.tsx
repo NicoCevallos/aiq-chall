@@ -71,6 +71,8 @@ export function EmailInput({
         if (event.key === "Backspace" && !inputValue && values?.length) {
             removeValue(values?.length - 1);
         } else if (["Enter", "Tab"].includes(event.key)) {
+            event.preventDefault();
+            
             const value = selectedSuggestion !== -1 && suggestions?.length
                 ? suggestions[selectedSuggestion]
                 : inputValue;
