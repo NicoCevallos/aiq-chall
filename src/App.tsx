@@ -1,23 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useCallback, useState } from 'react';
 import './App.css';
+import { EmailInput, EmailInputItem } from './components/EmailInput/EmailInput';
+import { mockedSuggestions } from './mockedSuggestions';
 
 function App() {
+  const [values, setValues] = useState<EmailInputItem[]>([]);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+
+  const onEmailInputChange = useCallback((inputValue: string) => {
+    setSuggestions(inputValue
+      ? mockedSuggestions.filter(s => s.includes(inputValue))
+      : []);
+  }, [])
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <EmailInput
+          placeholder="Enter recipients…"
+          values={values}
+          onChange={onEmailInputChange}
+          suggestions={suggestions}
+          onInput={setValues}
+        />
       </header>
     </div>
   );
